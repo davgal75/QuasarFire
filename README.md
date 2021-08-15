@@ -10,6 +10,17 @@ El proyecto se encuentra bajo la siguiente **IP pública** de un cluster ECS en 
 La ruta para probar con swagger es:
 **http://3.143.223.207:8080/swagger-ui.html#**
 
+### Posiciones de los satelites
+
+Los satelites inicialmente se encuentran en las siguientes posiciones:
+
+```
+Kenobi [-500, -200]
+Skywalker [100,-100]
+Sato [500,100]
+```
+*Tener en cuenta que estas posiciones pueden ser modificadas en el archivo Satelite.json en el directorio raiz.*
+
 ## Servicios
 
 Se desarrollo 3 servicios en los cuales se enviará la información correspondiente a cada satélite con respecto a un objeto distante. Estos responderán con un mensaje y posición aproximada del mismo.  
@@ -42,11 +53,66 @@ Servicio **POST** el cual intentara determinar la posición de la nave enemiga p
 #### Response
 ```
 {
-    "message": "message",
     "position": {
         "x": 0,
         "y": 0
-    }
+    },
+    "message": "message"
+}
+```
+
+#### Request ejemplo
+
+*Basado en las posiciones iniciales indicadas en este apartado*
+
+```
+{
+   "satellites":[
+      {
+         "name":"kenobi",
+         "distance":921.95,
+         "message":[
+            "este",
+            "",
+            "",
+            "mensaje",
+            ""
+         ]
+      },
+      {
+         "name":"skywalker",
+         "distance":424.26,
+         "message":[
+            "",
+            "es",
+            "",
+            "",
+            "secreto"
+         ]
+      },
+      {
+         "name":"sato",
+         "distance":509.9,
+         "message":[
+            "este",
+            "",
+            "un",
+            "",
+            ""
+         ]
+      }
+   ]
+}
+```
+
+#### Response ejemplo (esperado)
+```
+{
+    "position": {
+        "x": 400.0,
+        "y": -400.0
+    },
+    "message": "este es un mensaje secreto"
 }
 ```
 
@@ -58,7 +124,7 @@ Servicio **POST** el cual recibirá información y actualizara la misma por sat�
 - Si el satélite no existe, se omitirá la información enviada.
 
 #### Endpoint
-**http://3.143.223.207:8080/topsecret_split{satelite_name}**
+**http://3.143.223.207:8080/topsecret_split/{satelite_name}**
 
 #### Request
 ```
@@ -69,6 +135,65 @@ Servicio **POST** el cual recibirá información y actualizara la misma por sat�
 ```
 
 #### Response
+```
+Codigo de status OK (200)
+```
+
+#### Request ejemplo(s)
+
+*Basado en las posiciones iniciales indicadas en este apartado*
+
+
+*Peticion con Kenobi*
+
+http://3.143.223.207:8080/topsecret_split/kenobi
+```
+{
+    "distance":921.95,
+    "message":[
+       "este",
+       "",
+       "",
+       "mensaje",
+       ""
+    ]
+}
+```
+
+*Peticion con Skywalker*
+
+http://3.143.223.207:8080/topsecret_split/skywalker
+```
+{
+    "distance":424.26,
+    "message":[
+       "",
+       "es",
+       "",
+       "",
+       "secreto"
+    ]
+}
+```
+
+*Peticion con Sato*
+
+http://3.143.223.207:8080/topsecret_split/sato
+```
+{
+    "name":"sato",
+    "distance":509.9,
+    "message":[
+       "este",
+       "",
+       "un",
+       "",
+       ""
+    ]
+}
+```
+
+#### Response ejemplo (esperado)
 ```
 Codigo de status OK (200)
 ```
@@ -96,5 +221,24 @@ N/A
         "x": 0,
         "y": 0
     }
+}
+```
+
+#### Request ejemplo(s)
+
+*Basado en las posiciones iniciales indicadas en este apartado*
+
+```
+N/A
+```
+
+#### Response ejemplo (esperado)
+```
+{
+    "position": {
+        "x": 400.0,
+        "y": -400.0
+    },
+    "message": "este es un mensaje secreto"
 }
 ```
